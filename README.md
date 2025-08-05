@@ -1,20 +1,20 @@
-# Flakes for Dev Environments or Services
+# PostgreSQL Server Flake
 
-This Repo describes how to use flakes for isolated development environments per project. It enables engineers to run applications and scripts from different flakes, deploying services with their own flake-based configuration. Inside the project folder engineers execute custom nix develop, nix run, nix shell, and nix build per flake.
+This Flake enables Database Engineers to automate the setup of PostgrSQL server. It's build on NixOS and uses flakes to provide an isolated environment per projects. Nix enables engineers to run applications and scripts from different flakes, deploying services with their own flake-based configuration. Engineers define custom nix develop, nix run, nix shell, and nix build commands per project.
 
-## How to Use Multiple Flakes
+## Using Project Flakes
 
 | Goal                | Command Example                       |
 | ------------------- | ------------------------------------- |
 | Enter dev env       | `nix develop`                         |
 | Run app             | `nix run .#my-app`                    |
 | Build package       | `nix build .#my-pkg`                  |
-| Use multiple flakes | Use each in a separate dir/terminal   |
-| Run concurrently    | Yes, they’re independent and isolated |
+
+Using multiple flakes is enabled, using each in a separate diriectory and terminal. Applications run concurrently, they’re independent and isolated.
 
 ## Set Up a Flake for a Project
 
-Each project can be a separate directory with its own flake.nix.
+Each project is stored in a separate directory with its own flake.nix.
 
 ```nix
 {
@@ -34,7 +34,7 @@ Each project can be a separate directory with its own flake.nix.
 ```
 *Example: ~/projects/foo/flake.nix*
 
-You can have a completely separate flake for another project:
+Defining a completely separate flake for another project, requires to store another `flake.nix` in another directory
 
 ```nix
 {
@@ -51,24 +51,26 @@ You can have a completely separate flake for another project:
 ```
 *Example: ~/projects/bar/flake.nix*
 
-## Enter a Dev Shell for Each Flake
+## Enter the Development Shell for Each Flake
 
 ```sh
-cd ~/projects/foo
-nix develop
+cd ~/projects/foo && nix develop
+```
 
-# In another terminal
+In another terminal:
+
+```sh
 cd ~/projects/bar
 nix develop
 ```
 
-These are isolated environments. Each has its own packages, variables, versions, and flake inputs.
-You can run them in separate terminals, concurrently.
+Foo and Bar represent isolated environments. Each has its own packages, variables, versions, and flake inputs.
+To keep the shell separate, engineers run them in separate terminals, concurrently.
 
 
 ## Running Applications from Flakes
 
-Flakes can define apps, which you can run directly:
+Flakes can define apps, which can be run directly
 
 ```nix
 outputs = { self, nixpkgs }: {
@@ -78,16 +80,19 @@ outputs = { self, nixpkgs }: {
   };
 };
 ```
+*Definition of a programm in the configuration file*
 
-Then:
+Running this program from the command line interface (CLI)
 
 ```sh
 nix run .#hello
 ```
 
-This lets you structure multiple small flakes to encapsulate apps, scripts, etc.
+Flakes are configuration files that let engineers structure multiple services with encapsulated apps, scripts, etc. on a single machine.
 
 ## Building Packages from a Flake
+
+Using flakes enables engineers to package entire solution footprints into nix files automate the downstream service provisioning process.
 
 ```nix
 outputs = { self, nixpkgs }: {
@@ -103,7 +108,7 @@ nix build .#mytool
 
 ## Running Services Using `nix run` or Systemd/User Units
 
-If a flake builds a web service or daemon, you can run it with:
+If a flake builds a web service or daemon, operators can run it with:
 
 ```sh
 nix run github:username/my-service
@@ -162,6 +167,17 @@ To stop:
 ```sh
 pg_ctl -D pgdata stop
 ```
+
+### Summary
+
+| Tool     | Purpose                        |
+| -------- | ------------------------------ |
+| `psql`   | Main PostgreSQL CLI            |
+| `pgcli`  | Enhanced CLI with autocomplete |
+| `libpq`  | PostgreSQL client libraries    |
+| `initdb` | Create local DB for dev        |
+| `pg_ctl` | Manage the server              |
+
 
 ## Tips
 
