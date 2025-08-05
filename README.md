@@ -2,17 +2,6 @@
 
 This Flake enables Database Engineers to automate the setup of PostgrSQL server. It's build on NixOS and uses flakes to provide an isolated environment per projects. Nix enables engineers to run applications and scripts from different flakes, deploying services with their own flake-based configuration. Engineers define custom nix develop, nix run, nix shell, and nix build commands per project.
 
-### Using Project Flakes
-
-| Goal                | Command Example                       |
-| ------------------- | ------------------------------------- |
-| Enter dev env       | `nix develop`                         |
-| Run app             | `nix run .#my-app`                    |
-| Build package       | `nix build .#my-pkg`                  |
-
-Using multiple flakes is enabled, using each in a separate diriectory and terminal. Applications run concurrently, they’re independent and isolated.
-
-
 ## Project Structure
 
 ```sh
@@ -50,9 +39,9 @@ nix develop
 
 You now have access to psql, pgcli, and libpq in a clean environment.
 
-### Running the PostgreSQL Server and Creating a Database
+### Running a PostgreSQL Server and Creating a Database
 
-After loading the flake, engineers can spin up additional PostgreSQL server and test data or stored procedures.
+After loading the flake, engineers can spin up multiple PostgreSQL servers and test data or stored procedures.
 
 ```sh
 initdb --locale=en_US.UTF-8 -E UTF8 -D pgdata
@@ -66,6 +55,16 @@ Stopping the addtional server:
 ```sh
 pg_ctl -D pgdata stop
 ```
+
+### Basic Commands
+
+| Goal                | Command Example                       |
+| ------------------- | ------------------------------------- |
+| Enter dev env       | `nix develop`                         |
+| Run app             | `nix run .#my-app`                    |
+| Build package       | `nix build .#my-pkg`                  |
+
+Using multiple flakes is enabled, using each in a separate diriectory and terminal. Applications run concurrently, they’re independent and isolated.
 
 ### Basic Commands
 
