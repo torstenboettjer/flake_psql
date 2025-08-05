@@ -164,6 +164,53 @@ nix run .#hello
 
 Flakes are configuration files that let engineers structure multiple services with encapsulated apps, scripts, etc. on a single machine.
 
+## Scheduling Multiple Applications
+
+Scheduling process, engineers can rely on `process-compose`  as a dependency or as part of a development environment in a Nix flake. `process-compose` is heavily inspired by docker, it reads the schedule from process-compose.yaml (or .yml) by default, similar to docker reading from docker-compose.yaml. Using the tool in flakes doesn’t change how process-compose works internally, but it helps to pin and reproducibly install it.
+
+```nix
+{
+  description = "Dev environment with process-compose";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+      in {
+        devShells.default = pkgs.mkShell {
+          buildInputs = [
+            pkgs.process-compose
+            pkgs.docker     # example: other tools you may need
+          ];
+        };
+      });
+}
+```
+*Example configuration*
+
+Then run:
+```sh
+nix develop
+process-compose up
+```
+
+Run process-compose directly from a flake without devShell
+
+```sh
+nix run github:Platonic-Systems/process-compose
+```
+
+Or with a pinned version:
+
+```sh
+nix run github:Platonic-Systems/process-compose/v0.90.3
+```
+
 ## Building Packages from a Flake
 
 Using flakes enables engineers to package entire solution footprints into nix files automate the downstream service provisioning process.
