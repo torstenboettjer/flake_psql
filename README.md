@@ -1,6 +1,6 @@
 # PostgreSQL Server Flake
 
-This Flake enables Database Engineers to automate the setup of PostgrSQL server. It's build on NixOS and uses flakes to provide an isolated environment per projects. Nix enables engineers to run applications and scripts from different flakes, deploying services with their own flake-based configuration. Engineers define custom nix develop, nix run, nix shell, and nix build commands per project.
+This Flake enables Database Engineers to automate the setup of PostgreSQL server. It's build on NixOS and uses flakes to provide an isolated environment per projects. Nix enables engineers to run applications and scripts from different flakes, deploying services with their own flake-based configuration. Engineers define custom nix develop, nix run, nix shell, and nix build commands per project.
 
 ## Project Structure
 
@@ -73,7 +73,7 @@ Stopping the addtional server:
 pg_ctl -D pgdata stop
 ```
 
-### Basic Commands
+#### Basic PostgreSQL Commands
 
 | Tool     | Purpose                        |
 | -------- | ------------------------------ |
