@@ -22,7 +22,14 @@ plpgsql-dev/
 mkdir plpgsql-dev && cd plpgsql-dev
 ```
 
-### Save the `flake.nix` and `src/example.sql` files
+Save the `flake.nix` and `src/example.sql` files or fetch the github repository.
+
+```sh
+git clone https://github.com/torstenboettjer/flake_psql.git
+```
+*Example: Fetching the PSQL servier template*
+
+Using git clone creates the directory and downloads the proposed files.
 
 ### (Optional) Enable direnv auto-load
 
