@@ -54,7 +54,7 @@ The dev shell provides access to psql, pgcli, and libpq in a clean environment.
 | Run app             | `nix run .#my-app`                    |
 | Build package       | `nix build .#my-pkg`                  |
 
-Using multiple flakes is enabled, using each in a separate diriectory and terminal. Applications run concurrently, they’re independent and isolated.
+Nix commands excute independent and isolated and applications run concurrently when a flake is stored in a separate directory and commands are exectued in a separate terminal.
 
 ### Running a PostgreSQL Server and Creating a Database
 
