@@ -1,7 +1,23 @@
 version: "0.5"
 
 processes:
-    hello:
-        command: hello
+    postgres:
+        command: postgres -D ./pgdata -k ./socket
         availability:
-            restart: "always"
+            restart: "on_failure"
+        readiness_probe:
+            exec:
+                command: pg_isready -h ./socket -p 5432 -U postgres
+            initial_delay_seconds: 2
+            period_seconds: 1
+        environment:
+            PGDATA: ./pgdata
+            PGDATABASE: appdb
+            PGUSER: postgres
+        depends_on: []
+
+    initdb:
+        command: bash -c "initdb -D ./pgdata && pg_ctl -D ./pgdata -l logfile start && sleep 2 && psql -h ./socket -U postgres -f ./src/example.sql && pg_ctl -D ./pgdata stop"
+        availability:
+            restart: "never"
+        depends_on: []

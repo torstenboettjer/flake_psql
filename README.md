@@ -1,6 +1,6 @@
 # PostgreSQL Server Flake
 
-This flake enables database engineers to automate the setup of PostgreSQL server. Flakes represent NixOS artifacts that provide isolated service-development and -delivery environments for projects. Nix enables engineers to run applications and scripts from different flakes, deploying services with their own flake-based configuration. Engineers define custom nix develop, nix run, nix shell, and nix build commands per project.
+This flake enables database engineers to automate the setup of PostgreSQL server. Flakes represent NixOS artifacts that provide isolated service-development and -delivery environments for projects. NixOS eases the development and deployment of services running different applications and scripts from separate configurations defined in a flake and deploying services with their own flake-based configuration. Engineers define custom nix develop, nix run, nix shell, and nix build commands per project.
 
 ## Project Structure
 
@@ -9,12 +9,15 @@ plpgsql-dev/
 ├── flake.nix
 ├── flake.lock       # created automatically after first `nix develop`
 ├── .envrc           # (optional, for direnv)
+├── process-compose.yaml
 ├── README.md
 └── src/
     └── example.sql
 ```
 
 ## Usage Instructions
+
+NixOS flakes enable operators to run enterprise programs to build fragmented server **without user-space container (e.g. Docker)**. The linux distribution uses Nix packages to create reproducible environments, configures local sockets without open ports by default and eases customizations, e.g. following this example, modifying `example.sql` and/or adding services to `process-compose.yaml` enables engineers to build complex database server.
 
 ### Create Project Directory
 
@@ -141,36 +144,13 @@ nix develop
 Foo and Bar represent isolated environments. Each has its own packages, variables, versions, and flake inputs.
 To keep the shell separate, engineers run them in separate terminals, concurrently.
 
+## Composing Complex Servers
 
-## Running Applications from Flakes
-
-Flakes can also define apps, which can be run together with the database server
-
-```nix
-outputs = { self, nixpkgs }: {
-  apps.x86_64-linux.hello = {
-    type = "app";
-    program = "${nixpkgs.legacyPackages.x86_64-linux.hello}/bin/hello";
-  };
-};
-```
-*Definition of a programm in the configuration file*
-
-Running this program from the command line interface (CLI)
-
-```sh
-nix run .#hello
-```
-
-Flakes are configuration files that let engineers structure multiple services with encapsulated apps, scripts, etc. on a single machine.
-
-## Scheduling Multiple Applications
-
-Scheduling process, engineers can rely on `process-compose`  as a dependency or as part of a development environment in a Nix flake. `process-compose` is heavily inspired by docker, it reads the schedule from process-compose.yaml (or .yml) by default, similar to docker reading from docker-compose.yaml. Using the tool in flakes doesn’t change how process-compose works internally, but it helps to pin and reproducibly install it.
+Building more complex server, engineers can rely on `process-compose` as a scheduler that captures dependencies as part of a development environment in the Nix flake. `process-compose` is heavily inspired by docker, it reads the schedule from process-compose.yaml (or .yml) by default, similar to docker reading from docker-compose.yaml. Using the tool in flakes doesn’t change how process-compose works internally, but it helps to pin and reproducibly install it.
 
 ```nix
 {
-  description = "Dev environment with process-compose";
+  description = "PostgreSQL dev environment using process-compose";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -185,8 +165,13 @@ Scheduling process, engineers can rely on `process-compose`  as a dependency or 
         devShells.default = pkgs.mkShell {
           buildInputs = [
             pkgs.process-compose
-            pkgs.docker     # example: other tools you may need
+            pkgs.postgresql
+            pkgs.pgcli # optional: friendly CLI
           ];
+
+          shellHook = ''
+            echo "Ready to run: process-compose up"
+          '';
         };
       });
 }
@@ -210,6 +195,30 @@ Or with a pinned version:
 ```sh
 nix run github:Platonic-Systems/process-compose/v0.90.3
 ```
+
+The default example runs the hello command repeatedly.
+
+## Running Applications from Flakes
+
+Flakes can also define apps, which can be run together with the database server
+
+```nix
+outputs = { self, nixpkgs }: {
+  apps.x86_64-linux.hello = {
+    type = "app";
+    program = "${nixpkgs.legacyPackages.x86_64-linux.hello}/bin/hello";
+  };
+};
+```
+*Definition of a programm in the configuration file*
+
+Running this program from the command line interface (CLI)
+
+```sh
+nix run .#hello
+```
+
+Flakes are configuration files that let engineers structure multiple services with encapsulated apps, scripts, etc. on a single machine.
 
 ## Building Packages from a Flake
 
