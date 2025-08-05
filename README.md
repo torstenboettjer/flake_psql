@@ -44,7 +44,7 @@ direnv allow
 nix develop
 ```
 
-You now have access to psql, pgcli, and libpq in a clean environment.
+The dev shell provides access to psql, pgcli, and libpq in a clean environment.
 
 ### Running a PostgreSQL Server and Creating a Database
 
