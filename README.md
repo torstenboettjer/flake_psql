@@ -46,6 +46,16 @@ nix develop
 
 The dev shell provides access to psql, pgcli, and libpq in a clean environment.
 
+#### Basic Nix Commands
+
+| Goal                | Command Example                       |
+| ------------------- | ------------------------------------- |
+| Enter dev env       | `nix develop`                         |
+| Run app             | `nix run .#my-app`                    |
+| Build package       | `nix build .#my-pkg`                  |
+
+Using multiple flakes is enabled, using each in a separate diriectory and terminal. Applications run concurrently, they’re independent and isolated.
+
 ### Running a PostgreSQL Server and Creating a Database
 
 After loading the flake, engineers can spin up multiple PostgreSQL servers and test data or stored procedures.
@@ -62,16 +72,6 @@ Stopping the addtional server:
 ```sh
 pg_ctl -D pgdata stop
 ```
-
-### Basic Commands
-
-| Goal                | Command Example                       |
-| ------------------- | ------------------------------------- |
-| Enter dev env       | `nix develop`                         |
-| Run app             | `nix run .#my-app`                    |
-| Build package       | `nix build .#my-pkg`                  |
-
-Using multiple flakes is enabled, using each in a separate diriectory and terminal. Applications run concurrently, they’re independent and isolated.
 
 ### Basic Commands
 
