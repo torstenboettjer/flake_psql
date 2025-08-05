@@ -1,6 +1,6 @@
 # PostgreSQL Server Flake
 
-This flake enables database engineers to automate the setup of PostgreSQL server. Flakes represent NixOS artifacts that provide isolated service-development and -delivery environments for projects. NixOS eases the development and deployment of services running different applications and scripts from separate configurations defined in a flake and deploying services with their own flake-based configuration. Engineers define custom nix develop, nix run, nix shell, and nix build commands per project.
+This flake enables database engineers to automate the setup of custom PostgreSQL server. Flakes represent NixOS artifacts that provide isolated service-delivery environments. Relying on NixOS, system engineers consolidate the development and deployment process for managed services. Flakes are configuration files that allow operators to run different applications and service specific scripts using a virtual filesystem, rather than a virtual runtime. This enables engineers to capture kernel- and user-space configurations in the same file to define custom `develop`, `run`, `shell`, and `build` commands.
 
 ## Project Structure
 
