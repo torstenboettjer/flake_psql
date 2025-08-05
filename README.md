@@ -2,7 +2,7 @@
 
 This Flake enables Database Engineers to automate the setup of PostgrSQL server. It's build on NixOS and uses flakes to provide an isolated environment per projects. Nix enables engineers to run applications and scripts from different flakes, deploying services with their own flake-based configuration. Engineers define custom nix develop, nix run, nix shell, and nix build commands per project.
 
-## Using Project Flakes
+### Using Project Flakes
 
 | Goal                | Command Example                       |
 | ------------------- | ------------------------------------- |
@@ -12,9 +12,37 @@ This Flake enables Database Engineers to automate the setup of PostgrSQL server.
 
 Using multiple flakes is enabled, using each in a separate diriectory and terminal. Applications run concurrently, they’re independent and isolated.
 
+### Running the PostgreSQL Server and Creating a Database
+
+After loading the flake, engineers can spin up additional PostgreSQL server and test data or stored procedures.
+
+```sh
+initdb --locale=en_US.UTF-8 -E UTF8 -D pgdata
+pg_ctl -D pgdata -o "-p 5433" -l logfile start
+createdb -p 5433 dev
+psql -p 5433 -d dev
+```
+
+Stopping the addtional server:
+
+```sh
+pg_ctl -D pgdata stop
+```
+
+### Basic Commands
+
+| Tool     | Purpose                        |
+| -------- | ------------------------------ |
+| `psql`   | Main PostgreSQL CLI            |
+| `pgcli`  | Enhanced CLI with autocomplete |
+| `libpq`  | PostgreSQL client libraries    |
+| `initdb` | Create local DB for dev        |
+| `pg_ctl` | Manage the server              |
+
+
 ## Set Up a Flake for a Project
 
-Each project is stored in a separate directory with its own flake.nix.
+To setup mulitple projects for every instance an own `flake.nix` defined and stored in a separate directory.
 
 ```nix
 {
@@ -34,7 +62,7 @@ Each project is stored in a separate directory with its own flake.nix.
 ```
 *Example: ~/projects/foo/flake.nix*
 
-Defining a completely separate flake for another project, requires to store another `flake.nix` in another directory
+To setup another project a completely separate configuration is stored as `flake.nix` in another directory.
 
 ```nix
 {
@@ -53,11 +81,13 @@ Defining a completely separate flake for another project, requires to store anot
 
 ## Enter the Development Shell for Each Flake
 
+`nix develop` is a command from Nix Flakes that enables engineers to drop into a development environment based on a flake's configuration. It sets up all the dependencies and environment variables needed for development — without permanently installing anything to the system.
+
 ```sh
 cd ~/projects/foo && nix develop
 ```
 
-In another terminal:
+Calling the same command in another terminal loads another devShell from a flake, builds any required dependencies, sets up an isolated shell environment with those dependencies available, and drops the user into this shell.
 
 ```sh
 cd ~/projects/bar
@@ -152,32 +182,6 @@ nix develop
 ```
 
 You now have access to psql, pgcli, and libpq in a clean environment.
-
-## Running a Local PostgreSQL Server (Optional)
-
-You can use the built-in PostgreSQL to spin up a local server manually if you need test data or stored procedures.
-
-```sh
-initdb --locale=en_US.UTF-8 -E UTF8 -D pgdata
-pg_ctl -D pgdata -o "-p 5433" -l logfile start
-createdb -p 5433 dev
-psql -p 5433 -d dev
-```
-To stop:
-```sh
-pg_ctl -D pgdata stop
-```
-
-### Summary
-
-| Tool     | Purpose                        |
-| -------- | ------------------------------ |
-| `psql`   | Main PostgreSQL CLI            |
-| `pgcli`  | Enhanced CLI with autocomplete |
-| `libpq`  | PostgreSQL client libraries    |
-| `initdb` | Create local DB for dev        |
-| `pg_ctl` | Manage the server              |
-
 
 ## Tips
 
