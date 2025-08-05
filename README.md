@@ -12,6 +12,44 @@ This Flake enables Database Engineers to automate the setup of PostgrSQL server.
 
 Using multiple flakes is enabled, using each in a separate diriectory and terminal. Applications run concurrently, they’re independent and isolated.
 
+
+## Project Structure
+
+```sh
+plpgsql-dev/
+├── flake.nix
+├── flake.lock       # created automatically after first `nix develop`
+├── .envrc           # (optional, for direnv)
+├── README.md
+└── src/
+    └── example.sql
+```
+
+## Usage Instructions
+
+### Create Project Directory
+
+```sh
+mkdir plpgsql-dev && cd plpgsql-dev
+```
+
+### Save the `flake.nix` and `src/example.sql` files
+
+### (Optional) Enable direnv auto-load
+
+```sh
+echo 'use flake' > .envrc
+direnv allow
+```
+
+### Enter the Dev Shell
+
+```sh
+nix develop
+```
+
+You now have access to psql, pgcli, and libpq in a clean environment.
+
 ### Running the PostgreSQL Server and Creating a Database
 
 After loading the flake, engineers can spin up additional PostgreSQL server and test data or stored procedures.
@@ -100,7 +138,7 @@ To keep the shell separate, engineers run them in separate terminals, concurrent
 
 ## Running Applications from Flakes
 
-Flakes can define apps, which can be run directly
+Flakes can also define apps, which can be run together with the database server
 
 ```nix
 outputs = { self, nixpkgs }: {
@@ -145,43 +183,6 @@ nix run github:username/my-service
 ```
 
 Or hook it into a systemd user service (e.g. in `~/.config/systemd/user/my-service.service`), pointing to the flake output binary.
-
-## Project Structure
-
-```sh
-plpgsql-dev/
-├── flake.nix
-├── flake.lock       # created automatically after first `nix develop`
-├── .envrc           # (optional, for direnv)
-├── README.md
-└── src/
-    └── example.sql
-```
-
-## Usage Instructions
-
-### Create Project Directory
-
-```sh
-mkdir plpgsql-dev && cd plpgsql-dev
-```
-
-### Save the `flake.nix` and `src/example.sql` files
-
-### (Optional) Enable direnv auto-load
-
-```sh
-echo 'use flake' > .envrc
-direnv allow
-```
-
-### Enter the Dev Shell
-
-```sh
-nix develop
-```
-
-You now have access to psql, pgcli, and libpq in a clean environment.
 
 ## Tips
 
