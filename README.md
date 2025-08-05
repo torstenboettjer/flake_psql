@@ -27,7 +27,7 @@ Save the `flake.nix` and `src/example.sql` files or fetch the github repository.
 ```sh
 git clone https://github.com/torstenboettjer/flake_psql.git
 ```
-*Example: Fetching the PSQL servier template*
+*Example: Fetching the PSQL server template*
 
 Using git clone creates the directory and downloads the proposed files.
 
