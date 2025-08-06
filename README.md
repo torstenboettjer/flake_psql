@@ -17,7 +17,7 @@ plpgsql-dev/
 
 ## Usage Instructions
 
-NixOS modules run applications as independent, sandboxed processes—without the overhead of a full container runtime like Docker. This provides less isolation but superior stability for statefull services like a relational database server. Using the Nix package manager, you can still create reproducible environments on developer and production machines alike. On developer machines, services are configured with local sockets and no open ports, easing the devlopment process. To deploy complex database servers, you simply modify `example.sql` and/or `process-compose.yaml`. This declarative approach, rather than a manual, imperative one, allows you to manage the entire service lifecycle and dependencies in a predictable, auditable way.
+Nix flakes execute a set of applications combining independent, sandboxed processes and avoid the overhead of a container environment. Exexcuting applications directly means less isolation but superior stability and better performance for statefull processes like a relational database server. Using the programmable Nix package manager, you can still create reproducible environments. To use this template, you canfork the repository and simply modify `example.sql` and/or `process-compose.yaml`. 
 
 ### Create Project Directory
 
