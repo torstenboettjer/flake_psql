@@ -21,20 +21,14 @@ Nix flakes execute a set of applications combining independent, sandboxed proces
 
 ### Create Project Directory
 
-As a first step, create a local directory and save the `flake.nix` and `src/example.sql` files
-
-```sh
-mkdir plpgsql-dev && cd plpgsql-dev
-```
-
-Alternatively you can clone the github repository.
+As a first step, create a local directory and save the `flake.nix` and `src/example.sql` files, e.g. by cloning the github repository.
 
 ```sh
 git clone https://github.com/torstenboettjer/flake_psql.git
 ```
 *Example: Cloning the PSQL server template*
 
-Using git clone creates the directory and downloads the proposed files.
+Git clone creates the directory and downloads the proposed files.
 
 ### (Optional) Enable direnv auto-load
 
@@ -47,7 +41,9 @@ direnv allow
 
 ### Enter the Dev Shell
 
+Engineers create a full-fledged development environment for a specific project with `nix develop`. It's designed to debug and build a Nix derivation. The command sets up a much richer environment than nix shell. In addition to adding binaries to your $PATH, it also sets up a wide range of environment variables, build inputs, and shell functions (configurePhase, buildPhase, etc.) that are necessary for building and developing a package. The environment represents a fully equipped "workshop". You are working on a project that requires specific compilers, libraries, and build tools. nix develop sets up the entire workspace exactly as it needs to be, so you can interactively run the build steps, test code, and troubleshoot.
 
+Example: You have a project with a flake.nix file defining its development shell. You want to work on it.
 
 ```sh
 nix develop
