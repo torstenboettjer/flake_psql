@@ -17,7 +17,7 @@ plpgsql-dev/
 
 ## Usage Instructions
 
-Nix flakes execute a set of applications combining independent, sandboxed processes and avoid the overhead of a container environment. Exexcuting applications directly means less isolation but superior stability and better performance for statefull processes like a relational database server. Using the programmable Nix package manager, you can still create reproducible environments. To use this template, you canfork the repository and simply modify `example.sql` and/or `process-compose.yaml`. 
+Nix flakes execute a set of applications combining independent, sandboxed processes and avoid the overhead of a container environment. Exexcuting applications directly means less isolation but superior stability and better performance for statefull processes like a relational database server. Using the programmable Nix package manager, you can still create reproducible environments. To use this template, you fork the repository and simply modify `example.sql` and/or `process-compose.yaml`. 
 
 ### Create Project Directory
 
