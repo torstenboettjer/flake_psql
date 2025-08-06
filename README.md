@@ -1,8 +1,6 @@
 # PostgreSQL Server Flake
 
-This repository empowers system and database administrators to automate PostgreSQL server deployments with NixOS flakes. Flakes provide a consolidated, declarative approach to service configuration, isolating your development and deployment environments.
-
-By leveraging NixOS flakes, you can capture both kernel and user-space configurations in a single file. This allows you to define custom `develop`, `run`, `shell`, and `build` commands, streamlining the entire service lifecycle. The repository's use of a virtual filesystem, rather than a virtual runtime, gives you precise control over your managed services and their dependencies without the overhead of traditional virtual environments.
+This repository helps system and database administrators automate PostgreSQL server deployments using NixOS flakes. Flakes give you a declarative, single-file approach to service configuration, isolating your development and deployment environments. Instead of using a container runtime, this approach leverages a virtual filesystem, giving you precise control over your application and its dependencies without the management overhead for a kubernetes cluster. Flakes capture both kernel and user-space configurations, and let you define custom `develop`, `run`, `shell`, and `build` commands to streamline the entire service lifecycle.
 
 ## Project Structure
 
@@ -19,15 +17,17 @@ plpgsql-dev/
 
 ## Usage Instructions
 
-NixOS flakes enable operators to run enterprise programs to build fragmented server **without user-space container (e.g. Docker)**. The linux distribution uses Nix packages to create reproducible environments, configures local sockets without open ports by default and eases customizations, e.g. following this example, modifying `example.sql` and/or adding services to `process-compose.yaml` enables engineers to build complex database server.
+NixOS modules run applications as independent, sandboxed processes—without the overhead of a full container runtime like Docker. This provides less isolation but superior stability for statefull services like a relational database server. Using the Nix package manager, you can still create reproducible environments on developer and production machines alike. On developer machines, services are configured with local sockets and no open ports, easing the devlopment process. To deploy complex database servers, you simply modify `example.sql` and/or `process-compose.yaml`. This declarative approach, rather than a manual, imperative one, allows you to manage the entire service lifecycle and dependencies in a predictable, auditable way.
 
 ### Create Project Directory
+
+As a first step, create a local directory and save the `flake.nix` and `src/example.sql` files
 
 ```sh
 mkdir plpgsql-dev && cd plpgsql-dev
 ```
 
-Save the `flake.nix` and `src/example.sql` files or fetch the github repository.
+Alternatively you can fetch the github repository.
 
 ```sh
 git clone https://github.com/torstenboettjer/flake_psql.git
