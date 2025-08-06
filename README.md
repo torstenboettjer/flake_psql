@@ -27,16 +27,18 @@ As a first step, create a local directory and save the `flake.nix` and `src/exam
 mkdir plpgsql-dev && cd plpgsql-dev
 ```
 
-Alternatively you can fetch the github repository.
+Alternatively you can clone the github repository.
 
 ```sh
 git clone https://github.com/torstenboettjer/flake_psql.git
 ```
-*Example: Fetching the PSQL server template*
+*Example: Cloning the PSQL server template*
 
 Using git clone creates the directory and downloads the proposed files.
 
 ### (Optional) Enable direnv auto-load
+
+In case [direnv](https://direnv.net) is installed autoloading the flake is recommended.
 
 ```sh
 echo 'use flake' > .envrc
@@ -44,6 +46,8 @@ direnv allow
 ```
 
 ### Enter the Dev Shell
+
+
 
 ```sh
 nix develop
