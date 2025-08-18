@@ -21,7 +21,6 @@
           buildInputs = [
             postgres
             pkgs.pgcli         # Optional: nice interactive CLI
-            pkgs.libpq         # For C client libraries or bindings
           ];
 
           shellHook = ''
