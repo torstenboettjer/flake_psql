@@ -1,9 +1,34 @@
 # Building a High Availability PostgreSQL Cluster with Patroni using NixOS
 
+This repository helps system and database administrators automate PostgreSQL server deployments using NixOS flakes. High availability (HA) in PostgreSQL is essential for ensuring uninterrupted database services. Patroni is a popular solution that leverages etcd or Consul for distributed consensus and HA failover, managing PostgreSQL clusters with automatic leader election and replication management. In this guide, we’ll use a four-node architecture:
+
+* `node1` and `node2` — PostgreSQL database nodes
+* `etcdnode` — etcd cluster node
+* `haproxynode` — HAProxy load balancer node
+
+## Setup the etcd Cluster
+
+### Dependencies
+
+* net-tools
+* PostgreSQL
+* etcd
+
+### Configure etcd by editing `/etc/default/etcd`:
+
+```txt
+ETCD_LISTEN_PEER_URLS="http://192.168.32.140:2380"
+ETCD_LISTEN_CLIENT_URLS="http://localhost:2379,http://192.168.32.140:2379"
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.32.140:2380"
+ETCD_INITIAL_CLUSTER="default=http://192.168.32.140:2380,"
+ETCD_ADVERTISE_CLIENT_URLS="http://192.168.32.140:2379"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
+ETCD_INITIAL_CLUSTER_STATE="new"
+```
 
 ## PostgreSQL Server Flake
 
-This repository helps system and database administrators automate PostgreSQL server deployments using NixOS flakes. Flakes give you a declarative, single-file approach to service configuration, isolating your development and deployment environments. Instead of using a container runtime, this approach leverages a virtual filesystem, giving you precise control over your application and its dependencies without the management overhead for a kubernetes cluster. Flakes capture both kernel and user-space configurations, and let you define custom `develop`, `run`, `shell`, and `build` commands to streamline the entire service lifecycle.
+Flakes give you a declarative, single-file approach to service configuration, isolating your development and deployment environments. Instead of using a container runtime, this approach leverages a virtual filesystem, giving you precise control over your application and its dependencies without the management overhead for a kubernetes cluster. Flakes capture both kernel and user-space configurations, and let you define custom `develop`, `run`, `shell`, and `build` commands to streamline the entire service lifecycle.
 
 ### Project Structure
 
