@@ -6,9 +6,9 @@ This repository helps system and database administrators automate PostgreSQL ser
 * `etcdnode` — etcd cluster node
 * `haproxynode` — HAProxy load balancer node
 
-## Setup the etcd Cluster
+## Prerequisites
 
-### Dependencies
+### Packages
 
 * net-tools
 * PostgreSQL
@@ -24,6 +24,14 @@ ETCD_INITIAL_CLUSTER="default=http://192.168.32.140:2380,"
 ETCD_ADVERTISE_CLIENT_URLS="http://192.168.32.140:2379"
 ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
 ETCD_INITIAL_CLUSTER_STATE="new"
+```
+
+### Validate etcd
+
+```sh
+sudo systemctl restart etcd
+sudo systemctl status etcd
+curl http://192.168.32.140:2380/members
 ```
 
 ## PostgreSQL Server Flake
