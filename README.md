@@ -1,8 +1,11 @@
-# PostgreSQL Server Flake
+# Building a High Availability PostgreSQL Cluster with Patroni using NixOS
+
+
+## PostgreSQL Server Flake
 
 This repository helps system and database administrators automate PostgreSQL server deployments using NixOS flakes. Flakes give you a declarative, single-file approach to service configuration, isolating your development and deployment environments. Instead of using a container runtime, this approach leverages a virtual filesystem, giving you precise control over your application and its dependencies without the management overhead for a kubernetes cluster. Flakes capture both kernel and user-space configurations, and let you define custom `develop`, `run`, `shell`, and `build` commands to streamline the entire service lifecycle.
 
-## Project Structure
+### Project Structure
 
 ```sh
 plpgsql-dev/
@@ -15,11 +18,11 @@ plpgsql-dev/
     └── example.sql
 ```
 
-## Usage Instructions
+### Usage Instructions
 
 Nix flakes execute a set of applications combining independent, sandboxed processes and avoid the overhead of a container environment. Exexcuting applications directly means less isolation but superior stability and better performance for statefull processes like a relational database server. Using the programmable Nix package manager, you can still create reproducible environments. To use this template, you fork the repository and simply modify `example.sql` and/or `process-compose.yaml`. 
 
-### Create Project Directory
+#### Create Project Directory
 
 As a first step, create a local directory and save the `flake.nix` and `src/example.sql` files, e.g. by cloning the github repository.
 
@@ -30,7 +33,7 @@ git clone https://github.com/torstenboettjer/flake_psql.git
 
 Git clone creates the directory and downloads the proposed files.
 
-### (Optional) Enable direnv auto-load
+#### (Optional) Enable direnv auto-load
 
 In case [direnv](https://direnv.net) is installed autoloading the flake is recommended.
 
@@ -39,7 +42,7 @@ echo 'use flake' > .envrc
 direnv allow
 ```
 
-### Enter the Dev Shell
+#### Enter the Dev Shell
 
 Engineers create a full-fledged development environment for a specific project with `nix develop`. It's designed to debug and build a Nix derivation. The command sets up a much richer environment than nix shell. In addition to adding binaries to your $PATH, it also sets up a wide range of environment variables, build inputs, and shell functions (configurePhase, buildPhase, etc.) that are necessary for building and developing a package. The environment represents a fully equipped "workshop". You are working on a project that requires specific compilers, libraries, and build tools. nix develop sets up the entire workspace exactly as it needs to be, so you can interactively run the build steps, test code, and troubleshoot.
 
@@ -51,7 +54,7 @@ nix develop
 
 The dev shell provides access to psql, pgcli, and libpq in a clean environment.
 
-#### Basic Nix Commands
+##### Basic Nix Commands
 
 | Goal                | Command Example                       |
 | ------------------- | ------------------------------------- |
@@ -61,7 +64,7 @@ The dev shell provides access to psql, pgcli, and libpq in a clean environment.
 
 Nix commands excute independent and isolated and applications run concurrently when a flake is stored in a separate directory and commands are exectued in a separate terminal.
 
-### Running a PostgreSQL Server and Creating a Database
+#### Running a PostgreSQL Server and Creating a Database
 
 After loading the flake, engineers can spin up multiple PostgreSQL servers and test data or stored procedures.
 
@@ -78,7 +81,7 @@ Stopping the addtional server:
 pg_ctl -D pgdata stop
 ```
 
-#### Basic PostgreSQL Commands
+##### Basic PostgreSQL Commands
 
 | Tool     | Purpose                        |
 | -------- | ------------------------------ |
@@ -89,7 +92,7 @@ pg_ctl -D pgdata stop
 | `pg_ctl` | Manage the server              |
 
 
-## Set Up a Flake for a Project
+### Set Up a Flake for a Project
 
 To setup mulitple projects for every instance an own `flake.nix` defined and stored in a separate directory.
 
@@ -128,7 +131,7 @@ To setup another project a completely separate configuration is stored as `flake
 ```
 *Example: ~/projects/bar/flake.nix*
 
-## Enter the Development Shell for Each Flake
+### Enter the Development Shell for Each Flake
 
 `nix develop` is a command from Nix Flakes that enables engineers to drop into a development environment based on a flake's configuration. It sets up all the dependencies and environment variables needed for development — without permanently installing anything to the system.
 
@@ -146,7 +149,7 @@ nix develop
 Foo and Bar represent isolated environments. Each has its own packages, variables, versions, and flake inputs.
 To keep the shell separate, engineers run them in separate terminals, concurrently.
 
-## Composing Complex Servers
+### Composing Complex Servers
 
 Building more complex server, engineers can rely on `process-compose` as a scheduler that captures dependencies as part of a development environment in the Nix flake. `process-compose` is heavily inspired by docker, it reads the schedule from process-compose.yaml (or .yml) by default, similar to docker reading from docker-compose.yaml. Using the tool in flakes doesn’t change how process-compose works internally, but it helps to pin and reproducibly install it.
 
@@ -200,7 +203,7 @@ nix run github:Platonic-Systems/process-compose/v0.90.3
 
 The default example runs the hello command repeatedly.
 
-## Running Applications from Flakes
+### Running Applications from Flakes
 
 Flakes can also define apps, which can be run together with the database server
 
@@ -222,7 +225,7 @@ nix run .#hello
 
 Flakes are configuration files that let engineers structure multiple services with encapsulated apps, scripts, etc. on a single machine.
 
-## Building Packages from a Flake
+### Building Packages from a Flake
 
 Using flakes enables engineers to package entire solution footprints into nix files automate the downstream service provisioning process.
 
@@ -238,7 +241,7 @@ Then build it:
 nix build .#mytool
 ```
 
-## Running Services Using `nix run` or Systemd/User Units
+### Running Services Using `nix run` or Systemd/User Units
 
 If a flake builds a web service or daemon, operators can run it with:
 
@@ -248,7 +251,7 @@ nix run github:username/my-service
 
 Or hook it into a systemd user service (e.g. in `~/.config/systemd/user/my-service.service`), pointing to the flake output binary.
 
-## Tips
+### Tips
 
 1. Use `direnv` + `nix-direnv` to automatically load the flake dev shell on cd:
 
