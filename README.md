@@ -2,7 +2,7 @@
 
 This repository provides a declarative approach to deploying high-availability PostgreSQL clusters, targeting system and database administrators. The solution leverages NixOS flakes for automated, reproducible deployments. High availability is achieved via Patroni, a robust management system that orchestrates PostgreSQL clusters, including automatic failover and leader election. Patroni utilizes a distributed consensus system (such as etcd or Consul) to maintain cluster state and ensure continuous database availability. The proposed architecture for this implementation is a four-node cluster.
 
-* `node1` and `node2` — PostgreSQL database nodes
+* `psqlnode1` and `psqlnode2` — PostgreSQL database nodes
 * `etcdnode` — etcd cluster node (or Consul)
 * `haproxynode` — HAProxy load balancer node
 
