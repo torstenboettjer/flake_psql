@@ -6,6 +6,52 @@ This repository provides a declarative approach to deploying high-availability P
 * `etcdnode` — etcd cluster node (or Consul)
 * `haproxynode` — HAProxy load balancer node
 
+## Diagram
+
+```mermaid
+graph TD
+subgraph "High Availability PostgreSQL Cluster"
+direction LR
+A[PostgreSQL Primary]
+B[PostgreSQL Standby]
+C[PostgreSQL Standby]
+end
+
+subgraph "Patroni Agents"
+    P1[Patroni Agent]
+    P2[Patroni Agent]
+    P3[Patroni Agent]
+end
+
+subgraph "Consul Cluster (Distributed State Engine)"
+    D[Consul Server]
+    E[Consul Server]
+    F[Consul Server]
+end
+
+P1 -->|Manages| A
+P2 -->|Manages| B
+P3 -->|Manages| C
+
+A -- "Replicates WAL" --> B
+A -- "Replicates WAL" --> C
+
+P1 -- "Updates/Watches State" --> D
+P2 -- "Watches State" --> D
+P3 -- "Watches State" --> D
+
+D -- "Maintains Consensus" --> E
+D -- "Maintains Consensus" --> F
+E -- "Maintains Consensus" --> F
+
+style A fill:#2ecc71,stroke:#333,stroke-width:2px,color:#fff
+style B fill:#f39c12,stroke:#333,stroke-width:2px,color:#fff
+style C fill:#f39c12,stroke:#333,stroke-width:2px,color:#fff
+style D fill:#3498db,stroke:#333,stroke-width:2px,color:#fff
+style E fill:#3498db,stroke:#333,stroke-width:2px,color:#fff
+style F fill:#3498db,stroke:#333,stroke-width:2px,color:#fff
+```
+
 ## Prerequisites
 
 ### Packages
