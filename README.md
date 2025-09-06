@@ -358,12 +358,13 @@ nix run mylib
 3. Use `nix flake show` to explore outputs of a flake.
 
 ## Technologies
-* NixOS
-* Home Manager
-* Direnv
 
-##  Contribution
-Add features If you have an idea for a new feature, please open an issue to discuss it before creating a pull request.
-Report bugs If you find a bug, please open an issue with a clear description of the problem.
-Fix bugs If you know how to fix a bug, submit a pull request with your changes.
-Improve documentation If you find the documentation lacking, you can contribute improvements by editing the relevant files.
+* [NixOS](https://nixos.org/)
+* [Home Manager](https://nix-community.github.io/home-manager/)
+* [Direnv](https://direnv.net/)
+
+## Contribution
+* *Add features* If you have an idea for a new feature, please [open an issue](https://github.com/torstenboettjer/flake_psql/issues/new) to discuss it before creating a pull request.
+* *Report bugs* If you find a bug, please [open an issue](https://github.com/torstenboettjer/flake_psql/issues/new) with a clear description of the problem.
+* *Fix bugs* If you know how to fix a bug, submit a [pull request](https://github.com/torstenboettjer/flake_psql/pull/new) with your changes.
+* *Improve documentation* If you find the documentation lacking, you can contribute improvements by editing the relevant files.
